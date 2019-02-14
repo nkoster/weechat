@@ -18,6 +18,14 @@ function join_cb(data, signal, signal_data) {
     weechat.print(weechat.current_buffer(),"(-:\t" + signal + " " + signal_data);
     return weechat.WEECHAT_RC_OK
 }
-weechat.hook_signal("*,irc_in2_join", "join_cb", "")
+weechat.hook_signal("*,irc_in2_join", "join_cb", "");
+
+weechat.hook_command('vv', 'WHOIS user', 'host', '', '', 'vv_cb', '');
+
+function priv_cb(data, signal, signal_data) {
+    weechat.print(weechat.current_buffer(),"(-:\t" + signal + " " + signal_data);
+    return weechat.WEECHAT_RC_OK
+}
+weechat.hook_signal("*,irc_in2_privmsg", "priv_cb", "");
 
 weechat.print("", "Hello, from javascript script!");
