@@ -21,7 +21,16 @@ function join_cb(data, signal, signal_data) {
 weechat.hook_signal("*,irc_in2_join", "join_cb", "");
 
 function priv_cb(data, signal, signal_data) {
-    weechat.print(weechat.current_buffer(),"(-:\t" + signal + " " + signal_data);
+    var sd = signal_data.toString().split(' ');
+    var msg = sd.slice(3).toString();
+    msg = msg.substr(1);
+    if (sd[2][0] === '#') {
+        weechat.print(weechat.current_buffer(), '(-:\tchannel message');
+    } else {
+        weechat.print(weechat.current_buffer(), '(-:\tprivate message from ' +
+            sd[2].substr(0, sd[2].length - 1) + ' ' + msg);
+    }
+    weechat.print(weechat.current_buffer(),"(-:\t" + p3);
     return weechat.WEECHAT_RC_OK
 }
 weechat.hook_signal("*,irc_in2_privmsg", "priv_cb", "");
