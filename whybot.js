@@ -26,10 +26,4 @@ function priv_cb(data, signal, signal_data) {
 }
 weechat.hook_signal("*,irc_in2_privmsg", "priv_cb", "");
 
-function msg_cb(data, signal, signal_data) {
-    weechat.print(weechat.current_buffer(),"(o:\t" + signal + " " + signal_data);
-    return weechat.WEECHAT_RC_OK
-}
-weechat.hook_signal("*,irc_in2_msg", "msg_cb", "");
-
 weechat.print(weechat.current_buffer(), "WhyBot");
