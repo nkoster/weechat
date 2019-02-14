@@ -1,4 +1,4 @@
-weechat.register("test_js", "WhyBot", "6.6.6", "GPL3", "WhyBot Script", "", "");
+weechat.register("whybot", "WhyBot", "6.6.6", "GPL3", "WhyBot Script", "", "");
 
 function timer_cb(data, remaining_calls) {
     weechat.print(weechat.current_buffer(), data);
