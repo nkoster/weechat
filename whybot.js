@@ -1,5 +1,13 @@
 weechat.register('whybot', 'WhyBot', '6.6.6', 'GPL3', 'WhyBot Script', '', '');
 
+function buffer_input_cb() {
+
+}
+
+function buffer_close_cb() {
+
+}
+
 var buffer = weechat.buffer_new('whybot', 'buffer_input_cb', '', 'buffer_close_cb', '');
 weechat.buffer_set(buffer, 'title', 'whybot data buffer');
 weechat.buffer_set(buffer, "localvar_set_no_log", "1");
