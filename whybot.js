@@ -41,9 +41,15 @@ function priv_cb(data, signal, signal_data) {
         weechat.print(buffer, '(-:\tprivate message from ' +
             sd[2].substr(0, sd[2].length - 1) + ' ' + msg);
     }
-    weechat.print(buffer,'(-:\t\"' + signal_data + '"');
+    weechat.print(buffer,'(-:\t"' + signal_data + '"');
     return weechat.WEECHAT_RC_OK
 }
 weechat.hook_signal("*,irc_in2_privmsg", "priv_cb", "");
+
+function quit_cb(data, signal, signal_data) {
+    weechat.print(buffer, '(-:\t' + signal + ' ' + signal_data);
+    return weechat.WEECHAT_RC_OK
+}
+weechat.hook_signal('*,irc_in2_quit', 'quit_cb', '');
 
 weechat.print(weechat.current_buffer(), "WhyBotje");
