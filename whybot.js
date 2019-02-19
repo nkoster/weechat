@@ -1,11 +1,13 @@
 weechat.register('whybot', 'WhyBot', '6.6.6', 'GPL3', 'WhyBot Script', '', '');
 
 function buffer_input_cb() {
-
+    weechat.print(buffer, 'INPUT');
+    return weechat.WEECHAT_RC_OK;
 }
 
 function buffer_close_cb() {
-
+    weechat.print(buffer, 'CLOSE');
+    return weechat.WEECHAT_RC_OK;
 }
 
 var buffer = weechat.buffer_new('whybot', 'buffer_input_cb', '', 'buffer_close_cb', '');
