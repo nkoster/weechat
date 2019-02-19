@@ -30,7 +30,7 @@ def tr_cb(data, buffer, args):
     req.add_header('User-Agent', 'Mozilla/5.0')
     response = urllib2.urlopen(req)
     html = response.read()
-    weechat.prnt(weechat.current_buffer(), "tr::\t%s" % html.split('"')[1])
+    weechat.command(weechat.current_buffer(), "%s" % html.split('"')[1])
     return weechat.WEECHAT_RC_OK
 
 weechat.hook_command('tr', 'Translate', 'host', '', '', 'tr_cb', '')
