@@ -1,3 +1,5 @@
+## Language translation, by Niels, niels@w3b.net, license is GPL3.
+
 import weechat
 import urllib2
 
