@@ -17,4 +17,5 @@ good morning
 ```
 
 When you translate back from a language, the translated text will not be shown in the channel, only in the buffer.
+
 The default source language is Dutch, nl.
