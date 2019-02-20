@@ -30,7 +30,7 @@ def tr_cb(data, buffer, args):
     req.add_header('User-Agent', 'Mozilla/5.0')
     response = urllib2.urlopen(req)
     html = response.read()
-    if o == 'n':
+    if o == 'nl':
         weechat.command(weechat.current_buffer(), "%s" % html.split('"')[1])
     else:
         weechat.prnt(weechat.current_buffer(), "::tr\t%s" % html.split('"')[1])
