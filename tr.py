@@ -1,13 +1,13 @@
 import weechat
 import urllib2
 
-weechat.register('translate', 'Translator', '0.0.1', 'GPL3', 'Google Translate Script', '', '')
+weechat.register('tr', 'Translator', '0.0.1', 'GPL3', 'Google Translate Script', '', '')
 
 def timer_cb(data, remaining_calls):
     weechat.prnt(weechat.current_buffer(), '%s' % data)
     return weechat.WEECHAT_RC_OK
 
-weechat.hook_timer(2000, 0, 1, 'timer_cb', '/tr:\tUsing Google Translate')
+weechat.hook_timer(2000, 0, 1, 'timer_cb', '/tr:\t/tr, Google Translate in Weechat')
 
 def tr_cb(data, buffer, args):
     a = args.split(' ')
@@ -36,4 +36,6 @@ def tr_cb(data, buffer, args):
             weechat.prnt(weechat.current_buffer(), '/tr:\t%s' % tr)
     return weechat.WEECHAT_RC_OK
 
-weechat.hook_command('tr', 'Translate', 'language and text', '', '', 'tr_cb', '')
+weechat.hook_command('tr', 'Google Translate in Weechat', 'lang[,lang] text', \
+    'Language codes: https://sites.google.com/site/tomihasa/google-language-codes\n'
+    'Github: https://github.com/nkoster/weechat-translate\n', '', 'tr_cb', '')
