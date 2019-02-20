@@ -2,10 +2,17 @@
 
 **Use Google Translate directly in Weechat**
 
-Example:
+Put the ```tr.py``` script in ```~/.weechat/python/``` and type ```/script load tr.py```.
+
+Examples:
 
 ```
 /tr ar goedemorgen
+ صباح الخير
+/tr nl,ar صباح الخير
+Goede morgen
+/tr en,ar صباح الخير
+good morning
 ```
 
-Please check "[this](https://sites.google.com/site/tomihasa/google-language-codes)" for a list of language codes.
+[language codes](https://sites.google.com/site/tomihasa/google-language-codes)
