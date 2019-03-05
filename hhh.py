@@ -19,6 +19,7 @@ def priv_cb(data, signal, signal_data):
     message = message[message.find(':') + 1:]
 
     if debug:
+        weechat.prnt(buffer, '-----\t---------------------------------')
         weechat.prnt(buffer, 'raw\t' + signal_data)
         weechat.prnt(buffer, 'vars\tnick=' + nick + ', user=' + user + ', host=' + host + ', target=' + target)
 
