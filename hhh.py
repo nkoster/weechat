@@ -1,7 +1,7 @@
 import weechat
 import os.path
 
-userlist = '~/.weechat/userlist'
+userlist = 'userlist'
 debug = True
 
 weechat.register('hal', 'hal9000', '6.6.6', 'GPL3', 'HAL Script', '', '')
@@ -9,7 +9,10 @@ weechat.register('hal', 'hal9000', '6.6.6', 'GPL3', 'HAL Script', '', '')
 users = []
 
 def timer_cb(data, remaining_calls):
+
     current = weechat.current_buffer()
+    global users
+
     if os.path.isfile(userlist):
         weechat.prnt(current, 'HAL\tReading ' + userlist + '.')
         file = open(userlist, 'r') 
@@ -18,8 +21,8 @@ def timer_cb(data, remaining_calls):
         weechat.prnt(current, "HAL\tuserlist doesn't exists.")
         users = [
             '*!*@82-197-212-247.dsl.cambrium.nl',
-            '*!*80-101-145-252.ip.xs4all.nl',
-            '*!*2a01:238:4350:ff00:c53e:c819:422a:2511'
+            '*!*@80-101-145-252.ip.xs4all.nl',
+            '*!*@2a01:238:4350:ff00:c53e:c819:422a:2511'
         ]
     if debug:
         for u in users:
@@ -31,7 +34,8 @@ weechat.hook_timer(2000, 0, 1, 'timer_cb', 'HAL\tSystem fully operational.')
 
 def priv_cb(data, signal, signal_data):
 
-    buffer = weechat.current_buffer()
+    global users
+    current = weechat.current_buffer()
 
     args = signal_data.split(' ')[0:3]
     nick = args[0][1:].split('!')[0]
@@ -42,17 +46,20 @@ def priv_cb(data, signal, signal_data):
     message = message[message.find(':') + 1:]
 
     if debug:
-        weechat.prnt(buffer, '===\t========== Debug ==========')
-        weechat.prnt(buffer, 'raw\t' + signal_data)
-        weechat.prnt(buffer, 'vars\tnick=' + nick + ', user=' + user + ', host=' + host + ', target=' + target)
-
-    if any(host in s for s in users):
+        weechat.prnt(current, '===\t========== Debug ==========')
+        weechat.prnt(current, 'raw\t' + signal_data)
+        weechat.prnt(current, 'vars\tnick=' + nick + ', user=' + user + ', host=' + host + ', target=' + target)
+    if debug:
+        for u in users:
+            weechat.prnt(current, 'user\t' + u)
+    if any(host in u for u in users):
         if message[0] == '/':
-            weechat.command(buffer, 'On behalf of *' + nick + '*')
-            weechat.command(buffer, message)
+            if message[0:4] == '/say':
+                weechat.command(current, 'Yo')
+            weechat.command(current, message)
         if debug:
-            weechat.prnt(buffer, 'match\t' + host)
-            weechat.prnt(buffer, 'msg\t' + message)
+            weechat.prnt(current, 'match\t' + host)
+            weechat.prnt(current, 'msg\t' + message)
     
     return weechat.WEECHAT_RC_OK
 
