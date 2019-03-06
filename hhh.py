@@ -1,6 +1,6 @@
 import weechat
 
-debug = True
+debug = False
 
 weechat.register('hal', 'hal9000', '6.6.6', 'GPL3', 'HAL Script', '', '')
 
@@ -14,7 +14,7 @@ def timer_cb(data, remaining_calls):
     weechat.prnt(weechat.current_buffer(), '%s' % data)
     return weechat.WEECHAT_RC_OK
 
-weechat.hook_timer(2000, 0, 1, 'timer_cb', 'HAL\tAll systems are operational.')
+weechat.hook_timer(2000, 0, 1, 'timer_cb', 'HAL\tSystem fully operational.')
 
 def priv_cb(data, signal, signal_data):
 
@@ -35,7 +35,7 @@ def priv_cb(data, signal, signal_data):
 
     if any(host in s for s in users):
         if message[0] == '/':
-            weechat.command(buffer, 'On behalf of ' + nick + ':')
+            weechat.command(buffer, 'On behalf of *' + nick + '*')
             weechat.command(buffer, message)
         if debug:
             weechat.prnt(buffer, 'match\t' + host)
