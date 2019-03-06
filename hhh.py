@@ -66,7 +66,7 @@ def priv_cb(data, signal, signal_data):
             weechat.prnt(current, 'msg\t' + message)
     
     if 'HAL900' in message.upper():
-        if 'HOE LAAT' in message.upper():
+        if 'HOE LAAT' in message.upper() or 'TIME' in message.upper():
             weechat.command(current, str(datetime.datetime.now()))
     
     return weechat.WEECHAT_RC_OK
