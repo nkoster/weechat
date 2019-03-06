@@ -1,5 +1,6 @@
 import weechat
 import os.path
+import datetime
 
 userlist = 'userlist'
 debug = True
@@ -63,6 +64,10 @@ def priv_cb(data, signal, signal_data):
         if debug:
             weechat.prnt(current, 'match\t' + host)
             weechat.prnt(current, 'msg\t' + message)
+    
+    if 'HAL900' in message.upper():
+        if 'HOE LAAT' in message.upper():
+            weechat.command(current, str(datetime.datetime.now()))
     
     return weechat.WEECHAT_RC_OK
 
