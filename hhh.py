@@ -1,17 +1,30 @@
 import weechat
+import os.path
 
-debug = False
+userlist = '~/.weechat/userlist'
+debug = True
 
 weechat.register('hal', 'hal9000', '6.6.6', 'GPL3', 'HAL Script', '', '')
 
-users = [
-    '*!*@82-197-212-247.dsl.cambrium.nl',
-    '*!*80-101-145-252.ip.xs4all.nl',
-    '*!*2a01:238:4350:ff00:c53e:c819:422a:2511'
-    ]
+users = []
 
 def timer_cb(data, remaining_calls):
-    weechat.prnt(weechat.current_buffer(), '%s' % data)
+    current = weechat.current_buffer()
+    if os.path.isfile(userlist):
+        weechat.prnt(current, 'HAL\tReading ' + userlist + '.')
+        file = open(userlist, 'r') 
+        users = file.readlines()
+    else:
+        weechat.prnt(current, "HAL\tuserlist doesn't exists.")
+        users = [
+            '*!*@82-197-212-247.dsl.cambrium.nl',
+            '*!*80-101-145-252.ip.xs4all.nl',
+            '*!*2a01:238:4350:ff00:c53e:c819:422a:2511'
+        ]
+    if debug:
+        for u in users:
+            weechat.prnt(current, 'user\t' + u)
+    weechat.prnt(current, '%s' % data)
     return weechat.WEECHAT_RC_OK
 
 weechat.hook_timer(2000, 0, 1, 'timer_cb', 'HAL\tSystem fully operational.')
