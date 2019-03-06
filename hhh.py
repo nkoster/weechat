@@ -54,9 +54,12 @@ def priv_cb(data, signal, signal_data):
             weechat.prnt(current, 'user\t' + u)
     if any(host in u for u in users):
         if message[0] == '/':
-            if message[0:4] == '/say':
+            if message[1:4] == 'say':
                 weechat.command(current, 'Yo')
-            weechat.command(current, message)
+            if message[1:5] == 'quit':
+                weechat.command(current, 'hihi')
+            else:
+                weechat.command(current, message)
         if debug:
             weechat.prnt(current, 'match\t' + host)
             weechat.prnt(current, 'msg\t' + message)
