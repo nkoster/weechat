@@ -60,24 +60,30 @@ def priv_cb(data, signal, signal_data):
     if any(host in u for u in users):
 
         if message[0] == '/':
-            arg = message.split(' ')[1]
+            if len(message.split(' ')) > 1:
+                arg = message.split(' ')[1]
+            else:
+                arg =''
             store = False
             if message[1:4] == 'say':
                 weechat.command(current, 'Yo')
             elif message[1:5] == 'quit':
                 weechat.command(current, 'hihi')
-            elif message[1:8] == 'addhost':
+            elif message[1:8] == 'adduser':
                 users.append(arg + '\n')
                 weechat.prnt(current, 'HAL\t' + arg + ' added')
                 store = True
-            elif message[1:8] == 'delhost':
+            elif message[1:8] == 'deluser':
                 try:
                     users.remove(arg + '\n')
                 except:
-                    weechat.prnt(current, 'HAL\tHost does not exist')
+                    weechat.prnt(current, 'HAL\tUser does not exist')
                 else:
                     weechat.prnt(current, 'HAL\t' + arg + ' deleted')
                     store = True
+            elif message[1:10] == 'listusers':
+                for u in users:
+                    weechat.command(current, '/msg ' + nick + ' ' + u)
             else:
                 weechat.command(current, message)
             if store:
