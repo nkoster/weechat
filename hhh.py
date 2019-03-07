@@ -75,16 +75,20 @@ def priv_cb(data, signal, signal_data):
                 if not any(arg in u for u in users):
                     users.append(arg + '\n')
                     weechat.prnt(current, 'HAL\t' + arg + ' added')
+                    weechat.command(current, '/msg ' + nick + ' ' + arg + ' added')
                 else:
                     weechat.prnt(current, 'HAL\t' + arg + ' already exists')
+                    weechat.command(current, '/msg ' + nick + ' ' + arg + ' already exists')
                 store = True
             elif message[1:8] == 'deluser':
                 try:
                     users.remove(arg + '\n')
                 except:
                     weechat.prnt(current, 'HAL\tUser does not exist')
+                    weechat.command(current, '/msg ' + nick + ' User does not exist')
                 else:
                     weechat.prnt(current, 'HAL\t' + arg + ' deleted')
+                    weechat.command(current, '/msg ' + nick + ' ' + arg + ' deleted')
                     store = True
             elif message[1:10] == 'listusers':
                 for u in users:
