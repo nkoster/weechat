@@ -5,7 +5,7 @@ import datetime
 
 userlist = '/home/niels/.weechat/userlist'
 
-debug = False
+debug = True
 
 weechat.register('hal', 'hal9000', '6.6.6', 'GPL3', 'HAL Script', '', '')
 
@@ -49,8 +49,9 @@ def priv_cb(data, signal, signal_data):
     user = args[0][1:].split('!')[1].split('@')[0]
     host = args[0][1:].split('!')[1].split('@')[1]
     target = args[2]
-    message = signal_data[1:]
-    message = message[message.find(':') + 1:]
+    # message = signal_data[1:]
+    # message = message[message.find(':') + 1:]
+    message = signal_data.split(' PRIVMSG ')[1].split(':')[1]
 
     if debug:
         weechat.prnt(current, '===\t========== Debug ==========')
