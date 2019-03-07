@@ -3,8 +3,9 @@ import weechat
 import os.path
 import datetime
 
-userlist = './userlist'
-debug = True
+userlist = '/home/niels/.weechat/userlist'
+
+debug = False
 
 weechat.register('hal', 'hal9000', '6.6.6', 'GPL3', 'HAL Script', '', '')
 
@@ -19,6 +20,7 @@ def timer_cb(data, remaining_calls):
         weechat.prnt(current, 'HAL\tReading ' + userlist)
         file = open(userlist, 'r') 
         users = file.readlines()
+        file.close()
     else:
         weechat.prnt(current, "HAL\tUsing default user list")
         users = [
@@ -39,6 +41,7 @@ weechat.hook_timer(2000, 0, 1, 'timer_cb', 'HAL\tSystem fully operational')
 def priv_cb(data, signal, signal_data):
 
     global users
+
     current = weechat.current_buffer()
 
     args = signal_data.split(' ')[0:3]
@@ -55,13 +58,38 @@ def priv_cb(data, signal, signal_data):
         weechat.prnt(current, 'vars\tnick=' + nick + ', user=' + user + ', host=' + host + ', target=' + target)
 
     if any(host in u for u in users):
+
         if message[0] == '/':
+            arg = message.split(' ')[1]
+            store = False
             if message[1:4] == 'say':
                 weechat.command(current, 'Yo')
-            if message[1:5] == 'quit':
+            elif message[1:5] == 'quit':
                 weechat.command(current, 'hihi')
+            elif message[1:8] == 'addhost':
+                users.append(arg + '\n')
+                weechat.prnt(current, 'HAL\t' + arg + ' added')
+                store = True
+            elif message[1:8] == 'delhost':
+                try:
+                    users.remove(arg + '\n')
+                except:
+                    weechat.prnt(current, 'HAL\tHost does not exist')
+                else:
+                    weechat.prnt(current, 'HAL\t' + arg + ' deleted')
+                    store = True
             else:
                 weechat.command(current, message)
+            if store:
+                weechat.prnt(current, 'HAL\tStoring ' + userlist)
+                file = open(userlist, 'w')
+                file.writelines(users)
+                file.close()
+
+        if debug:
+            for u in users:
+                weechat.prnt(current, 'user\t' + u)
+
         if debug:
             weechat.prnt(current, 'match\t' + host)
             weechat.prnt(current, 'msg\t' + message)
