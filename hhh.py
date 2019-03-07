@@ -68,11 +68,15 @@ def priv_cb(data, signal, signal_data):
             store = False
             if message[1:4] == 'say':
                 weechat.command(current, 'Yo')
+                weechat.command(current, message[5:])
             elif message[1:5] == 'quit':
                 weechat.command(current, 'hihi')
             elif message[1:8] == 'adduser':
-                users.append(arg + '\n')
-                weechat.prnt(current, 'HAL\t' + arg + ' added')
+                if not any(arg in u for u in users):
+                    users.append(arg + '\n')
+                    weechat.prnt(current, 'HAL\t' + arg + ' added')
+                else:
+                    weechat.prnt(current, 'HAL\t' + arg + ' already exists')
                 store = True
             elif message[1:8] == 'deluser':
                 try:
