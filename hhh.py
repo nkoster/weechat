@@ -58,7 +58,6 @@ def priv_cb(data, signal, signal_data):
     user = args[0][1:].split('!')[1].split('@')[0]
     host = args[0][1:].split('!')[1].split('@')[1]
     target = args[2]
-    #message = signal_data.split(' PRIVMSG ')[1].split(':')[1]
     message = signal_data.split(' PRIVMSG ')[1].split(' :')[1]
 
     if debug:
