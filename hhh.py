@@ -3,6 +3,17 @@ import weechat
 import os.path
 import datetime
 
+def get(filename):
+    file = open(filename, 'r') 
+    users = file.readlines()
+    file.close()
+    return users
+
+def put(filename, users):
+    file = open(filename, 'w')
+    file.writelines(users)
+    file.close()
+
 userlist = '/home/niels/.weechat/userlist'
 
 debug = True
@@ -18,9 +29,7 @@ def timer_cb(data, remaining_calls):
 
     if os.path.isfile(userlist):
         weechat.prnt(current, 'HAL\tReading ' + userlist)
-        file = open(userlist, 'r') 
-        users = file.readlines()
-        file.close()
+        users = get(userlist)
     else:
         weechat.prnt(current, "HAL\tUsing default user list")
         users = [
@@ -49,14 +58,14 @@ def priv_cb(data, signal, signal_data):
     user = args[0][1:].split('!')[1].split('@')[0]
     host = args[0][1:].split('!')[1].split('@')[1]
     target = args[2]
-    # message = signal_data[1:]
-    # message = message[message.find(':') + 1:]
-    message = signal_data.split(' PRIVMSG ')[1].split(':')[1]
+    #message = signal_data.split(' PRIVMSG ')[1].split(':')[1]
+    message = signal_data.split(' PRIVMSG ')[1].split(' :')[1]
 
     if debug:
         weechat.prnt(current, '===\t========== Debug ==========')
         weechat.prnt(current, 'raw\t' + signal_data)
         weechat.prnt(current, 'vars\tnick=' + nick + ', user=' + user + ', host=' + host + ', target=' + target)
+        weechat.prnt(current, 'msg\t' + message)
 
     if any(host in u for u in users):
 
@@ -97,9 +106,7 @@ def priv_cb(data, signal, signal_data):
                 weechat.command(current, message)
             if store:
                 weechat.prnt(current, 'HAL\tStoring ' + userlist)
-                file = open(userlist, 'w')
-                file.writelines(users)
-                file.close()
+                put(userlist, users)
 
         if debug:
             for u in users:
