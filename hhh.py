@@ -99,7 +99,7 @@ def priv_cb(data, signal, signal_data):
                     weechat.prnt(current, 'HAL\t' + arg + ' deleted')
                     weechat.command(current, '/msg ' + nick + ' ' + arg + ' deleted')
                     store = True
-            elif message[1:10] == 'listusers':
+            elif message[1:10] == 'users':
                 weechat.command(current, '/msg ' + nick + ' -----begin-----')
                 for u in users:
                     weechat.command(current, '/msg ' + nick + ' ' + u)
