@@ -3,6 +3,11 @@ import weechat
 import os.path
 import datetime
 
+debug = False
+greet = True
+
+weechat.register('hal', 'The Hell', '6.6.6', 'GPL3', 'Hell Script', '', '')
+
 def get(filename):
     file = open(filename, 'r') 
     users = file.readlines()
@@ -15,10 +20,6 @@ def put(filename, users):
     file.close()
 
 userlist = '/home/niels/.weechat/userlist'
-
-debug = True
-
-weechat.register('hal', 'hal9000', '6.6.6', 'GPL3', 'HAL Script', '', '')
 
 users = []
 
@@ -99,8 +100,10 @@ def priv_cb(data, signal, signal_data):
                     weechat.command(current, '/msg ' + nick + ' ' + arg + ' deleted')
                     store = True
             elif message[1:10] == 'listusers':
+                weechat.command(current, '/msg ' + nick + ' -----begin-----')
                 for u in users:
                     weechat.command(current, '/msg ' + nick + ' ' + u)
+                weechat.command(current, '/msg ' + nick + ' ------end------')
             else:
                 weechat.command(current, message)
             if store:
@@ -130,7 +133,8 @@ def join_cb(data, signal, signal_data):
     if buffer:
         if debug:
             weechat.prnt(buffer, '%s (%s) has joined. Welcome!' % (msg['nick'], msg['host']))
-        weechat.command(buffer, 'для здоровья!')
+        if greet:
+            weechat.command(buffer, 'для здоровья!')
     return weechat.WEECHAT_RC_OK
 
 weechat.hook_signal('*,irc_in2_join', 'join_cb', '')
