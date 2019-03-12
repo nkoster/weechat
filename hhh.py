@@ -122,3 +122,14 @@ def join_cb(data, signal, signal_data):
     return weechat.WEECHAT_RC_OK
 
 weechat.hook_signal('*,irc_in2_join', 'join_cb', '')
+
+def mode_cb(data, signal, signal_data):
+    weechat.prnt('', signal_data)
+    global users
+    server = signal.split(",")[0]
+    msg = weechat.info_get_hashtable("irc_message_parse", {"message": signal_data})
+    if not any(msg['host'] in u for u in users):
+        weechat.command('', 'bastard! ' + msg['nick'])
+    return weechat.WEECHAT_RC_OK
+
+weechat.hook_signal('*,irc_in2_mode', 'mode_cb', '')
